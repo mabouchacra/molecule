@@ -17,10 +17,9 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
-"""[[DEPRECARTED]] Provisioner Ansible Plugins."""
+"""Provisioner Ansible Plugins."""
 
 import os
-import warnings
 
 from molecule import config, interpolation, util
 
@@ -35,14 +34,11 @@ def from_yaml(data):
 
     :return: dict
     """
-    warnings.warn(
-        "Deprecated, remove it or replace it with community.molecule.from_yaml",
-        category=RuntimeWarning,
-    )
-    molecule_env_file = os.environ["MOLECULE_ENV_FILE"]
+    molecule_env_file = os.environ.get("MOLECULE_ENV_FILE", None)
 
     env = os.environ.copy()
-    env = config.set_env_from_file(env, molecule_env_file)
+    if molecule_env_file:
+        env = config.set_env_from_file(env, molecule_env_file)
 
     i = interpolation.Interpolator(interpolation.TemplateWithDefaults, env)
     interpolated_data = i.interpolate(data)
@@ -52,28 +48,16 @@ def from_yaml(data):
 
 def to_yaml(data):
     """Format data as YAML."""
-    warnings.warn(
-        "Deprecated, remove it or replace it with community.molecule.to_yaml",
-        category=RuntimeWarning,
-    )
     return str(util.safe_dump(data))
 
 
 def header(content):
     """Return heaader to be added."""
-    warnings.warn(
-        "Deprecated, remove it or replace it with community.molecule.header",
-        category=RuntimeWarning,
-    )
     return util.molecule_prepender(content)
 
 
 def get_docker_networks(data, state, labels={}):
     """Get list of docker networks."""
-    warnings.warn(
-        "Deprecated, remove it or replace it with community.molecule.get_docker_networks",
-        category=RuntimeWarning,
-    )
     network_list = []
     network_names = []
     for platform in data:
@@ -108,8 +92,8 @@ class FilterModule(object):
 
     def filters(self):
         return {
-            "molecule_from_yaml": from_yaml,
-            "molecule_to_yaml": to_yaml,
-            "molecule_header": header,
-            "molecule_get_docker_networks": get_docker_networks,
+            "from_yaml": from_yaml,
+            "to_yaml": to_yaml,
+            "header": header,
+            "get_docker_networks": get_docker_networks,
         }

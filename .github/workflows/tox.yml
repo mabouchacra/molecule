@@ -111,6 +111,8 @@ jobs:
           xargs git tag --delete
       - name: Build dists
         run: python -m tox
+      - name: Publish collection
+        run: PUBLISH=1 python -m tox -e packaging
       - name: Publish to test.pypi.org
         if: >-
           (

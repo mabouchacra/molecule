@@ -1,0 +1,10 @@
+namespace: community
+name: molecule
+version: 3.1.0
+authors:
+  - Ansible
+description: Ansible Molecule collection contains molecule specific modules.
+license: MIT
+readme: README.md
+build_ignore:
+  - Makefile
